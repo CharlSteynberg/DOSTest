@@ -1,0 +1,260 @@
+
+   .scroll
+   {
+      overflow:auto;
+   }
+
+   .layer
+   {
+      position:absolute;
+      z-index:1;
+   }
+
+   .stretch
+   {
+      width:100%;
+      height:100%;
+   }
+
+   .limit-min-size
+   {
+      min-width:320px;
+      min-height:320px;
+   }
+
+   .test-bgr
+   {
+      background:#BADA55;
+   }
+
+   .tbl
+   {
+      display:table;
+   }
+
+   .row
+   {
+      display:table-row;
+   }
+
+   .col
+   {
+      display:table-cell;
+   }
+
+   .abs-middle
+   {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+   }
+
+   .pad-1
+   {
+      padding:1em;
+   }
+
+   .click
+   {
+      cursor:pointer;
+   }
+
+   .panel-head
+   {
+      height:5em;
+   	background:#2b2b2b;
+      padding-left:1.5em;
+   }
+
+   .panel-body
+   {
+   	background:#212121;
+      text-align:center;
+   }
+
+   .panel-foot
+   {
+      height:5em;
+   	background:#2b2b2b;
+   }
+
+   .row-evn
+   {
+      background:#212121;
+      height:3em;
+   }
+
+   .row-odd
+   {
+      background:#191919;
+      height:3em;
+   }
+
+   .pad-1
+   { padding:1em; }
+
+   .align-left
+   {
+      text-align:left;
+   }
+
+   .show
+   {
+      display:auto;
+      opacity:1;
+   }
+
+   .hide
+   {
+      display:none;
+      opacity:0;
+   }
+
+   .soft
+   {
+      opacity:0.5;
+   }
+
+   .notice-error
+   {
+      display:block;
+      padding:0.5em;
+      border:0.2em solid #A00;
+      border-radius:0.5em;
+      background:rgba(200,0,0,0.1);
+   }
+
+
+   .led-busy
+   {
+      width:3.5em;
+      color:#E00;
+   }
+
+   .led-away
+   {
+      width:3.5em;
+      color:#EE0;
+   }
+
+   .led-open
+   {
+      width:3.5em;
+      color:#0E0;
+   }
+
+   .sepr-h
+   {
+      border-top:0.2em solid #131313;
+   }
+
+   .sepr-v
+   {
+      width:0px;
+      height:100%;
+      border-left:0.1em solid #303030;
+      border-right:0.1em solid #000;
+      margin-right:0.6em;
+      opacity:0.3;
+   }
+
+   .span-60
+   {
+      width:60%;
+   }
+
+   .combo-box
+   {
+		display:inline-block;
+      text-align:left;
+		width:16em;
+		height:2em;
+      overflow:hidden;
+		border:1px solid #161718;
+		border-radius:0.3em;
+		background:#212224;
+		margin:0.3em;
+		margin-left:0em;
+		margin-right:0em;
+   }
+
+	.combo-box:hover
+	{
+		background:#2d2f31;
+	}
+
+
+	.combo-txt
+	{
+		display:inline-block;
+      position:absolute;
+		width:15.9em;
+		height:1.7em;
+		cursor:default;
+		padding:0.2em;
+		padding-left:0.2em;
+		padding-right:0em;
+	}
+
+	.combo-btn
+	{
+		display:inline-block;
+      position:relative;
+      float:right;
+		color:#AAA;
+		background:#2d2f31;
+		padding:0.3em;
+		padding-left:0.3em;
+		padding-right:0.3em;
+		cursor:pointer;
+		border-left:1px solid #161718;
+		font-size:1.2em;
+		line-height:1.2em;
+      width:1.3em;
+      height:1.3em;
+	}
+
+	.combo-btn:hover
+	{
+		background:#3d4146;
+	}
+
+	.combo-lst
+	{
+		display:inline-block;
+		position:absolute;
+		z-index:9999;
+		background:#2e3032;
+		border:0.1em solid #161718;
+		border-radius:0.3em;
+		margin-top:2em;
+		overflow:auto;
+		box-shadow:0em 0em 0.5em rgba(0,0,0,0.5);
+	}
+
+	.combo-itm
+	{
+		display:block;
+		position:relative;
+		background:#333537;
+		font-family:android;
+		font-size:0.8em;
+		padding:0.4em;
+	}
+
+	.combo-itm:hover
+	{
+		background:#3d4146;
+		cursor:pointer;
+	}
+
+   .inline
+   {
+      display:inline-block;
+   }
+
+   .float-right
+   {
+      float:right;
+   }

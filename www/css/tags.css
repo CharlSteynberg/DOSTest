@@ -1,0 +1,45 @@
+
+	html
+	{ height:100%; }
+
+	body
+	{
+		height:100%;
+		margin:0em;
+		overflow:auto;
+		background:#cdcdcd;
+	}
+
+	body, th, td, div, span, p, a
+	{
+		font-family:android;
+		color:#efefef;
+	}
+
+	h2
+	{
+		font-family:android;
+		font-size:1.2em;
+		font-weight:500;
+		margin:0em;
+	}
+
+	table
+	{
+		border-spacing:0px;
+		border-collapse:collapse;
+	}
+
+	input
+	{
+		display:inline-block;
+		font-family:android;
+		font-size:1em;
+		line-height:1em;
+		color:#AAA;
+		border:none;
+		background:none;
+		padding:0.2em;
+		padding-left:0.2em;
+		padding-right:0em;
+	}
