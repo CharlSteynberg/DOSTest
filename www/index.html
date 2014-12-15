@@ -23,14 +23,14 @@
                <div id="contacts">
                   <table class="stretch" cellpadding="0" cellspacing="0">
                      <tr>
-                        <td class="stretch panel-head test-bgr">
+                        <td class="stretch panel-head test-bgr" onmouseover="contacts.hideDetail()">
                            <table class="stretch">
                               <tr>
                                  <td><h2>Contacts</h2></td>
                                  <td align="center">
                                     <div class="combo-box">
-                                       <input class="combo-txt" name="statement_type" type="text" value="Email Address">
-                                       <div class="combo-btn icon-down-dir" onclick="combo(['Email Address', 'Phone Number'])"></div>
+                                       <input id="toggleShow" class="combo-txt" name="statement_type" type="text" data="emlOpt" value="Email Address">
+                                       <div class="combo-btn icon-down-dir" onclick="combo({'emlOpt':'Email Address', 'pneOpt':'Phone Number'}, contacts.toggleShow)"></div>
                                     </div>
                                  </td>
                               </tr>
@@ -40,6 +40,32 @@
                      <tr>
                         <td class="panel-body">
                            <div id="ctxLst" class="stretch scroll">
+
+                              <div id="htmSrc" class="hide">
+                                 <table cellpadding="0" cellspacing="0" class="ctx-tbl" border="0">
+                                    <tr class="vspan-3em row-{clData.evnOdd} sepr-h" onmouseover="contacts.showDetail(this)">
+                                       <td align="center" valign="middle" class="span-3em icon-circle led-{clData.status}"></td>
+                                       <td class="align-left span-6em" valign="middle">{clData.name}</td>
+                                       <td class="span-1em">
+                                          <div class="sepr-v"></div>
+                                       </td>
+                                       <td align="left">
+                                          <span class="emlOpt soft show">{clData.email}</span>
+                                          <span class="pneOpt soft hide">{clData.phone}</span>
+                                          <a class="emlDtl hide" href="mailto:{clData.email}">{clData.email}</a>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td colspan="2" onmouseover="contacts.hideDetail()"></td>
+                                       <td colspan="2" align="left" class="row-{clData.evnOdd} pad-1">
+                                          <span>{clData.phone}</span><br><br>
+                                          <span>{clData.address}</span><br>
+                                          <span>{clData.city} {clData.country} {clData.pstl_code}</span>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+
                               <noscript>
                                  <div class="pad-1">
                                     <div class="notice-error">
@@ -50,11 +76,12 @@
                                     </div>
                                  </div>
                               </noscript>
+
                            </div>
                         </td>
                      </tr>
                      <tr>
-                        <td class="panel-foot">
+                        <td class="panel-foot" onmouseover="contacts.hideDetail()">
                         </td>
                      </tr>
                   </table>

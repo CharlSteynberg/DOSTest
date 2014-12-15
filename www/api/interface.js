@@ -4,7 +4,7 @@
 
    // BUILD DROPDOWN FROM GIVEN LIST
    // -------------------------------------------------------------------------
-      window.combo = function(lst)
+      window.combo = function(lst, cbf)
       {
          var cmbObj = window.event.srcElement.parentNode;
          var tgtNde = cmbObj.getElementsByClassName('combo-txt');
@@ -23,13 +23,15 @@
             var lstItm = document.createElement('div');
             lstItm.className = 'combo-itm';
             lstItm.value = lst[itm];
+            lstItm.data = itm;
 
             lstItm.innerHTML = lst[itm];
 
             lstItm.onmousedown = function()
             {
                tgtNde.value = this.value;
-               showOnly(this.value);
+               tgtNde.data = this.data;
+               cbf(this.data, this.value);
             };
 
             var lstIco = document.createElement('div');
@@ -87,115 +89,185 @@
 
 
 
-// GET CONTACT LIST DATA FROM JSON
+// CONTACTS OBJECT || CLASS
 // ========================================================================================================
-   function getContacts()
+   window.contacts = // object
    {
-      var ctx = document.getElementById("ctxLst");
-      var xhr = new XMLHttpRequest();
-      var src = 'api/data.json';
-      var jsn = null;
+   // COLOURED DOT AS STATUS
+   // -------------------------------------------------------------------------
+      iconStatus:{1:'busy', 2:'away', 3:'open'},
+   // -------------------------------------------------------------------------
 
-      var result = document.createElement('table');
-      var status = {1:'busy', 2:'away', 3:'open'};
 
-      var evnOdd = function(nbr)
+   // FOR EVEN OR ODD ROWS
+   // -------------------------------------------------------------------------
+      getEvenOdd:function(nbr)
       {
          if (((nbr /2)+'').indexOf('.') > 0)
          { return 'odd'; }
          else
          { return 'evn'; }
-      };
+      },
+   // -------------------------------------------------------------------------
 
-      result.className = 'stretch';
 
-      ctx.innerHTML = 'One moment please...';
-
-      xhr.open('GET', src, false);
-      xhr.send(null);
-
-      try
-      { jsn = JSON.parse(xhr.response); }
-      catch(e)
+   // SHOW ONLY EMAIL OR PHONE NUMBERS :: FOR DROP-DOWN MENU
+   // -------------------------------------------------------------------------
+      toggleShow:function(cls, val)
       {
-         ctx.innerHTML = 'ParseError: invalid JSON data';
-         return;
-      }
+         var opt = {'Email Address':'emlOpt', 'Phone Number':'pneOpt'};
+         var nds = null;
 
-      for (var i in jsn)
-      {
-         var itmRow = document.createElement('tr');
+         for (var i in opt)
+         {
+            nds = document.getElementsByClassName(opt[i]);
+            nds = [].slice.call(nds);
 
-         var stsCol = document.createElement('td');
-         var nmeCol = document.createElement('td');
-         var sepCol = document.createElement('td');
-         var dfnCol = document.createElement('td');
+            if (nds.length > 0)
+            {
+               for (var n in nds)
+               { nds[n].className = nds[n].className+' soft hide'; }
+            }
+         }
 
-         var sepDiv = document.createElement('div');
-         var emlOpt = document.createElement('span');
-         var pneOpt = document.createElement('span');
-
-         itmRow.className = 'sepr-h row-'+evnOdd(i);
-
-         stsCol.className = "icon-circle led-"+status[jsn[i]['status']];
-         nmeCol.className = 'align-left';
-         dfnCol.className = 'align-left soft';
-
-         sepDiv.className = 'sepr-v';
-         emlOpt.className = 'emlOpt show';
-         pneOpt.className = 'pneOpt hide';
-
-         nmeCol.innerHTML = jsn[i]['name'];
-         emlOpt.innerHTML = jsn[i]['email'];
-         pneOpt.innerHTML = jsn[i]['phone'];
-
-         sepCol.appendChild(sepDiv);
-         dfnCol.appendChild(emlOpt);
-         dfnCol.appendChild(pneOpt);
-
-         itmRow.appendChild(stsCol);
-         itmRow.appendChild(nmeCol);
-         itmRow.appendChild(sepCol);
-         itmRow.appendChild(dfnCol);
-
-         result.appendChild(itmRow);
-      }
-
-      ctx.innerHTML = '';
-
-      ctx.appendChild(result);
-   };
-// ========================================================================================================
-
-
-
-// SHOW ONLY DETAILS BY SELECTED OPTION
-// ========================================================================================================
-   function showOnly(kwd)
-   {
-      var opt = {'Email Address':'emlOpt', 'Phone Number':'pneOpt'};
-      var cls = 'emlOpt show,pneOpt show'.split(',');
-      var tgt = opt[kwd];
-      var nds = null;
-
-      for (var i in cls)
-      {
-         nds = document.getElementsByClassName(cls[i]);
+         nds = document.getElementsByClassName(cls);
          nds = [].slice.call(nds);
 
-         if (nds.length > 0)
+         for (var n in nds)
+         { nds[n].className = cls+' soft show'; }
+      },
+   // -------------------------------------------------------------------------
+
+
+   // GET CONTACTS FROM JSON DATA AND BUILD LIST ON GUI
+   // -------------------------------------------------------------------------
+      importList:function()
+      {
+      // GET TARGET ELEMENT AND HTML TEMPLATE FROM HTML
+      // ----------------------------------------------------------------------
+         var ctxLst = document.getElementById("ctxLst");
+         var htmSrc = document.getElementById("htmSrc").innerHTML;
+      // ----------------------------------------------------------------------
+
+
+      // GET JSON DATA
+      // ----------------------------------------------------------------------
+         ctxLst.innerHTML = 'One moment please...';
+
+         var src = 'api/data.json';
+         var jsn = null;
+
+         var xhr = new XMLHttpRequest();
+             xhr.open('GET', src, false);
+             xhr.send(null);
+
+         try
+         { jsn = JSON.parse(xhr.response); }
+         catch(e)
          {
-            for (var n in nds)
-            { nds[n].className = (nds[n].className.replace('show', 'hide')); }
+            console.log('ParseError: invalid JSON data');
+            return;
+         }
+      // ----------------------------------------------------------------------
+
+
+      // BUILD LIST FROM DATA & MODIFY TEMPLATE FOR EACH ITEM
+      // ----------------------------------------------------------------------
+         ctxLst.innerHTML = '';
+
+         for (var i in jsn)
+         {
+            var ctxRow = document.createElement('div');
+            var rowHtm = htmSrc+'';
+            var clData = jsn[i];
+
+            clData['evnOdd'] = contacts.getEvenOdd(i);
+            clData['status'] = contacts.iconStatus[clData['status']];
+
+            ctxRow.className = 'ctx-row';
+
+            if (!clData['pstl_code'])
+            { clData['pstl_code'] = '<i class="soft">undefined&nbsp;</i>'; }
+
+            for (var fld in clData)
+            {
+               rowHtm = rowHtm.split('{clData.'+fld+'}').join(clData[fld]);
+            }
+
+            ctxRow.innerHTML = rowHtm;
+
+            ctxRow.onclick = function()
+            { contacts.showDetail(this); }
+
+            ctxLst.appendChild(ctxRow);
+         }
+      // ----------------------------------------------------------------------
+      },
+   // -------------------------------------------------------------------------
+
+
+   // EXPAND DETAILS ON FOCUS
+   // -------------------------------------------------------------------------
+      showDetail:function(tgt)
+      {
+         var nds = document.getElementsByClassName('ctx-row');
+         nds = [].slice.call(nds);
+
+         if (tgt.className != 'ctx-row')
+         { tgt = tgt.parentNode.parentNode.parentNode; }
+
+         var tglObj = document.getElementById('toggleShow');
+         var tglOpt = tglObj.data;
+
+         if (!tglOpt)
+         { tglOpt = tglObj.getAttribute('data'); }
+
+         for (var n in nds)
+         {
+            nds[n].style.opacity = 0.36;
+            nds[n].style.zIndex=1;
+            nds[n].style.overflow='hidden';
+
+            nds[n].getElementsByClassName(tglOpt)[0].className = tglOpt+' soft show';
+            nds[n].getElementsByClassName('emlDtl')[0].className = 'emlDtl hide';
+         }
+
+         tgt.style.opacity = 1;
+         tgt.style.zIndex=999;
+         tgt.style.overflow='visible';
+
+         tgt.getElementsByClassName(tglOpt)[0].className = tglOpt+' hide';
+         tgt.getElementsByClassName('emlDtl')[0].className = 'emlDtl show';
+      },
+   // -------------------------------------------------------------------------
+
+
+   // HIDE DETAILS
+   // -------------------------------------------------------------------------
+      hideDetail:function()
+      {
+         var nds = document.getElementsByClassName('ctx-row');
+         nds = [].slice.call(nds);
+
+         var tglObj = document.getElementById('toggleShow');
+         var tglOpt = tglObj.data;
+
+         if (!tglOpt)
+         { tglOpt = tglObj.getAttribute('data'); }
+
+         for (var n in nds)
+         {
+            nds[n].style.opacity = 1;
+            nds[n].style.zIndex=1;
+            nds[n].style.overflow='hidden';
+
+            nds[n].getElementsByClassName(tglOpt)[0].className = tglOpt+' soft show';
+            nds[n].getElementsByClassName('emlDtl')[0].className = 'emlDtl hide';
          }
       }
+   // -------------------------------------------------------------------------
+   };
 
-      nds = document.getElementsByClassName(tgt+' hide');
-      nds = [].slice.call(nds);
-
-      for (var n in nds)
-      { nds[n].className = tgt+' show'; }
-   }
 // ========================================================================================================
 
 
@@ -206,6 +278,6 @@
    {
       window.removeEventListener("load", load, false);
 
-      getContacts();
+      contacts.importList();
    },false);
 // ========================================================================================================

@@ -14,6 +14,7 @@
 	{
 		font-family:android;
 		color:#efefef;
+		cursor:default;
 	}
 
 	h2
@@ -42,4 +43,10 @@
 		padding:0.2em;
 		padding-left:0.2em;
 		padding-right:0em;
+	}
+
+	a
+	{
+		color:#00f6ff;
+		cursor:pointer;
 	}
